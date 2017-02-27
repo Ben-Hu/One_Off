@@ -1,0 +1,11 @@
+#lang racket
+(define (tail-reverse lst)
+  (reverse-helper lst '()))
+  
+(define (reverse-helper lst [acc '()])
+  (if (equal? lst empty)
+      acc
+      (reverse-helper (rest lst) (cons (first lst) acc))))
+  
+  
+  
