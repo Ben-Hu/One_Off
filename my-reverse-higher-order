@@ -1,4 +1,0 @@
-#lang racket
-;implement a list reversal function without using recusion - only higher order functions
-(define (my-reverse [lst '()])
-  (foldl cons '() lst))
