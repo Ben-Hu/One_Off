@@ -51,3 +51,4 @@ chmod +x /etc/init.d/vncserver
 service vncserver start
 update-rc.d vncserver defaults
 
+### If using ufw remember to allow ports 5900+n
