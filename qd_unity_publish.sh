@@ -1,5 +1,6 @@
 #!/bin/bash
 ########################################
+
 EDITOR_LOC=<unity_editor_install_loc> 
 PROJECT_PATH=<unity_project_path>
 KEY_LOC=<ssh_key_file>
@@ -8,8 +9,23 @@ BLD_ID=$(date "+%m%d%Y%H%M%S")
 START_TIME=$(date +%m)
 
 $EDITOR_LOC -quit -batchmode -nographics -executeMethod Build.PerformOSXUniversalBuild -projectPath $PROJECT_PATH -logFile $PROJECT_PATH/../publishOSX.log
-$EDITOR_LOC -quit -batchmode -nographics -executeMethod Build.PerformWinBuild -projectPath $PROJECT_PATH  -logFile $PROJECT_PATH/../publishWIN.log
-$EDITOR_LOC -quit -batchmode -nographics -executeMethod Build.PerformWebBuild -projectPath $PROJECT_PATH  -logFile $PROJECT_PATH/../publishWEB.log
+if [ $? -eq  0 ]; then
+    $EDITOR_LOC -quit -batchmode -nographics -executeMethod Build.PerformWinBuild -projectPath $PROJECT_PATH  -logFile $PROJECT_PATH/../publishWIN.log
+    if [ $? -eq  0 ]; then
+        $EDITOR_LOC -quit -batchmode -nographics -executeMethod Build.PerformWebBuild -projectPath $PROJECT_PATH  -logFile $PROJECT_PATH/../publishWEB.log
+        if [ $? -ne 0 ]; then
+            echo "WebGL Build FAILED\nLogFile: $PROJECT_PATH/../publishWEB.log"
+            exit
+        fi
+    else 
+        echo "Windows Build FAILED\nLogFile: $PROJECT_PATH/../publishWIN.log"
+        exit
+    fi
+else
+    echo "OSX Build FAILED\nLogFile: $PROJECT_PATH/../publishOSXlog"
+    exit
+fi
+
 END_TIME=$(date +%m)
 ELAPSED_TIME=$[$END_TIME - $START_TIME]
 JSON_PAYLOAD="{\"channel\": \"#builds\", \"username\": \"HI\", \"icon_emoji\": \":shipit:\",\"text\": \"Build $BLD_ID has completed\nElapsed Time: $ELAPSED_TIME minutes.\nPublishing build to\n<MORE MESSAGE>\"}"

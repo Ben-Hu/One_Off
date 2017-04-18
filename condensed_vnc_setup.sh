@@ -4,6 +4,9 @@ sudo apt-get install xfce4 xfce4-goodies tightvncserver
 #Should also install xvfb for the virtual frame buffer if you are using 
 #VNC to work around Unity's requirement to have a display for initial license agreement 
 #when building on a headless server
+###
+# Example use of xvfb to work around unity requiring a frame buffer to build
+# xvfb-run --auto-servernum --server-args='-screen 0 640x480x24' /opt/Unity/Editor/Unity -quit -batchmode -nographics -projectPath /var/lib/jenkins/workspace/<project> -logFile <log_file_loc> -executeMethod Class.BuildMethod 
 
 vncserver
 
@@ -48,3 +51,4 @@ chmod +x /etc/init.d/vncserver
 service vncserver start
 update-rc.d vncserver defaults
 
+### If using ufw remember to allow ports 5900+n
