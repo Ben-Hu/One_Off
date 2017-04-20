@@ -1,0 +1,30 @@
+autodetach on
+defmonitor off
+vbell off
+vbell_msg 'Ding Ding'
+#activity 'Activity in window % ~'
+#bell 'Bell at window % ~'
+activity 'Activity in %t'
+bell 'Bell in window %t'
+startup_message off
+defscrollback 8000
+silencewait 30
+
+hardstatus alwayslastline "%w"
+caption always "%3n %t %c"
+
+# disable kill binding
+#bind k
+# bind suspend to split
+bind s
+bind s select
+# disable resume binding
+bind q
+
+screen -t zero 0
+screen -t verc 1
+screen -t remote1 2
+screen -t  remote2 3
+screen -t work 4
+termcapinfo xterm ti@:te@
+termcapinfo xterm-color ti@:te@
