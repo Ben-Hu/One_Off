@@ -1,0 +1,6 @@
+if screen -ls | grep sr > /dev/null;
+then 
+  screen -dr `screen -ls | grep sr | awk '{print $1}'`
+else 
+  screen -S sr 
+fi
